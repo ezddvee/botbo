@@ -10,6 +10,10 @@ import threading
 import os
 import sys
 
+from dotenv import load_dotenv
+load_dotenv()
+discord_bot_token = os.getenv('discord_bot_token')
+
 # Khởi tạo bot Discord
 intents = discord.Intents.default()
 intents.message_content = True
@@ -34,7 +38,7 @@ async def on_message(message):
 
 # Chạy bot trong thread riêng
 def run_bot():
-    bot.run('MTMxMDU2MjE1NzM1MTY2OTc3Mg.G9rX4p.fHf3CGxIeioVP1Uy_Y3EfqLHvtUWHUd2xRR6nk')
+    bot.run(discord_bot_token)
 
 # Hàm thoát ứng dụng
 def quit_app():
