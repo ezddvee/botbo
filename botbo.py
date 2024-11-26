@@ -7,7 +7,7 @@ import os
 
 from dotenv import load_dotenv
 load_dotenv()
-discord_bot_token = os.getenv('discord_bot_token')
+bot_token = os.getenv('BOT_TOKEN')
 
 # Nếu bạn cần chỉ định đường dẫn tới tesseract (trong trường hợp tesseract không nằm trong PATH)
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -47,4 +47,4 @@ async def on_message(message):
                 #    await message.channel.send('Không tìm thấy văn bản nào trong ảnh.')
 
 # Đặt token bot của bạn ở đây
-bot.run(discord_bot_token)
+bot.run(bot_token)

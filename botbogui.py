@@ -12,7 +12,7 @@ import sys
 
 from dotenv import load_dotenv
 load_dotenv()
-discord_bot_token = os.getenv('discord_bot_token')
+bot_token = os.getenv('BOT_TOKEN')
 
 # Khởi tạo bot Discord
 intents = discord.Intents.default()
@@ -38,7 +38,7 @@ async def on_message(message):
 
 # Chạy bot trong thread riêng
 def run_bot():
-    bot.run(discord_bot_token)
+    bot.run(bot_token)
 
 # Hàm thoát ứng dụng
 def quit_app():
