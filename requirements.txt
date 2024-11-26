@@ -3,3 +3,4 @@ Pillow
 pytesseract
 python-dotenv
 openai
+google-generativeai

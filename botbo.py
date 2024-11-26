@@ -5,37 +5,42 @@ import pytesseract
 import io
 import os
 from dotenv import load_dotenv
-from openai import OpenAI
+import google.generativeai as genai
 
 # Nạp các biến môi trường
 load_dotenv()
 bot_token = os.getenv('DISCORD_BOT_TOKEN')
+gemini_api_key = os.getenv('GOOGLE_API_KEY')
 
-# Khởi tạo OpenAI client
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# Cấu hình Gemini API
+genai.configure(api_key=gemini_api_key)
 
 # Tạo bot với command prefix là "!"
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-def get_gpt_response(text):
+def get_gemini_response(text):
     """
-    Gửi câu hỏi tới GPT-4o-mini và nhận đáp án
+    Gửi câu hỏi tới Gemini 1.5 Flash và nhận đáp án
     """
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "Chỉ đưa đáp án, khỏi giải thích"},
-                {"role": "user", "content": text}
-            ],
-            max_tokens=100,
-            temperature=0.7
-        )
-        return response.choices[0].message.content.strip()
+        # Khởi tạo model Gemini
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Tạo prompt với system instruction
+        full_prompt = f"Chỉ đưa đáp án, khỏi giải thích: {text}"
+        
+        # Gọi API
+        response = model.generate_content(full_prompt, 
+                                          generation_config=genai.types.GenerationConfig(
+                                              max_output_tokens=100,
+                                              temperature=0.7
+                                          ))
+        
+        return response.text.strip()
     except Exception as e:
-        print(f"Lỗi khi gọi API OpenAI: {e}")
+        print(f"Lỗi khi gọi Gemini API: {e}")
         return "Không thể lấy đáp án"
 
 @bot.event
@@ -57,11 +62,11 @@ async def on_message(message):
                 
                 # Kiểm tra nếu có nội dung
                 if text.strip():
-                    # Gửi câu hỏi tới GPT và nhận đáp án
-                    gpt_response = get_gpt_response(text)
+                    # Gửi câu hỏi tới Gemini và nhận đáp án
+                    gemini_response = get_gemini_response(text)
                     
                     # Gửi phản hồi với @everyone
-                    await message.channel.send(f'@everyone {gpt_response}')
+                    await message.channel.send(f'@everyone {gemini_response}')
 
 # Chạy bot
 bot.run(bot_token)
