@@ -2,3 +2,4 @@ discord.py
 Pillow
 pytesseract
 python-dotenv
+openai
