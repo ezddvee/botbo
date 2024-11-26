@@ -9,10 +9,10 @@ from openai import OpenAI
 
 # Nạp các biến môi trường
 load_dotenv()
-bot_token = os.getenv('BOT_TOKEN')
+bot_token = os.getenv('DISCORD_BOT_TOKEN')
 
 # Khởi tạo OpenAI client
-client = OpenAI(api_key=os.getenv('API_KEY'))
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 # Tạo bot với command prefix là "!"
 intents = discord.Intents.default()

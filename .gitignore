@@ -1,6 +1,4 @@
 .env
 botbo.bat
-botbo_backup.py
 botbogui.py
-botbogui_backup.py
 icon.ico
