@@ -21,16 +21,19 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 def get_gpt_response(text):
     """
-    Gửi câu hỏi tới GPT-3.5-turbo và nhận đáp án
+    Gửi câu hỏi tới GPT-4o-mini và nhận đáp án
     """
     try:
-        response = client.completions.create(
-            model="gpt-3.5-turbo-instruct",
-            prompt=f"Chỉ đưa đáp án, khỏi giải thích: {text}",
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Chỉ đưa đáp án, khỏi giải thích"},
+                {"role": "user", "content": text}
+            ],
             max_tokens=100,
             temperature=0.7
         )
-        return response.choices[0].text.strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"Lỗi khi gọi API OpenAI: {e}")
         return "Không thể lấy đáp án"
